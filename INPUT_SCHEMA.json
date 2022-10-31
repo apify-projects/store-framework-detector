@@ -1,0 +1,35 @@
+{
+    "title": "This actor must be runned only from other actors",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "startUrls": {
+            "title": "Site URLs to checkup",
+            "type": "array",
+            "description": "Single URL per site is enough",
+            "prefill": [
+                { "url": "https://www.apify.com" }
+            ],
+            "editor": "requestListSources"
+        },
+        "proxyConfig": {
+            "title": "Proxy configuration",
+            "type": "object",
+            "description": "You will need to use Apify proxy or custom proxies. Residential proxy recommended to ensure checkup accuracy.",
+            "default": {
+                "useApifyProxy": true,
+                "apifyProxyGroups": ["RESIDENTIAL"]
+            },
+            "prefill": {
+                "useApifyProxy": true,
+                "apifyProxyGroups": ["RESIDENTIAL"]
+            },
+            "editor": "proxy",
+            "sectionCaption": "Proxy settings",
+            "sectionDescription": "Proxy to access targeted websites"
+        }
+    },
+    "required": [
+        "startUrls"
+    ]
+}

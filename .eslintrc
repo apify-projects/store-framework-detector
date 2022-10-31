@@ -1,0 +1,7 @@
+{
+    "extends": "@apify",
+    "root": true,
+    "parserOptions": {
+        "ecmaVersion": 2021
+    }
+}

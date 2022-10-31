@@ -1,0 +1,15 @@
+{
+    "actorSpecification": 1,
+    "name": "default-output",
+    "title": "Live output",
+    "description": "Auto format for dataset items",
+    "version": "0.0.1",
+    "storages": {
+        "dataset": {
+            "actorSpecification": 1,
+            "title": "",
+            "description": "",
+            "views": {}
+        }
+    }
+}
