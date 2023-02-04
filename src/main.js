@@ -25,7 +25,7 @@ Actor.main(async () => {
                 // pptr proxy fix
                 const newProxyUrl = await proxyChain.anonymizeProxy(proxy);
                 const wappalyzer = new Wappalyzer({ proxy: newProxyUrl });
-                await wappalyzer.init();
+                await wappalyzer.init({ timeout: 60000 });
 
                 // Optionally set additional request headers
                 const headers = {};
