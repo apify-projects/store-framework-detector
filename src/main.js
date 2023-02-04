@@ -24,8 +24,22 @@ Actor.main(async () => {
                 const proxy = await proxyConfiguration.newUrl();
                 // pptr proxy fix
                 const newProxyUrl = await proxyChain.anonymizeProxy(proxy);
-                const wappalyzer = new Wappalyzer({ proxy: newProxyUrl });
-                await wappalyzer.init({ timeout: 60000 });
+                const wappalyzer = new Wappalyzer({
+                    debug: false, // Output debug messages
+                    delay: 0, // Wait for ms milliseconds between requests
+                    headers: {}, // Extra header to send with requests
+                    maxDepth: 1, // Don't analyse pages more than num levels deep
+                    maxUrls: 1, // Exit when num URLs have been analysed
+                    maxWait: 60000, // Wait no more than ms milliseconds for page resources to load
+                    recursive: false, // Follow links on pages (crawler)
+                    probe: true, // Perform a deeper scan by performing additional requests and inspecting DNS records
+                    proxy: newProxyUrl,
+                    htmlMaxCols: 2000, // Limit the number of HTML characters per line processed
+                    htmlMaxRows: 3000, // Limit the number of HTML lines processed
+                    noScripts: false, // Disabled JavaScript on web pages
+                    noRedirect: false, // Disable cross-domain redirects
+                });
+                await wappalyzer.init();
 
                 // Optionally set additional request headers
                 const headers = {};
