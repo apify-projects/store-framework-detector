@@ -1,8 +1,18 @@
 import { Actor } from 'apify';
-import { KeyValueStore, BasicCrawler, log, Dataset } from 'crawlee';
+import { RequestQueue, RequestList, KeyValueStore, BasicCrawler, log, Dataset } from 'crawlee';
 import Wappalyzer from 'wappalyzer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import proxyChain from 'proxy-chain';
+
+const fromStartUrls = async function* (startUrls, name = 'STARTURLS') {
+    const rl = await RequestList.open(name, startUrls);
+
+    let rq;
+    // eslint-disable-next-line no-cond-assign
+    while (rq = await rl.fetchNextRequest()) {
+        yield rq;
+    }
+};
 
 Actor.main(async () => {
     const input = await KeyValueStore.getInput();
@@ -17,7 +27,14 @@ Actor.main(async () => {
 
     const proxyConfiguration = await Actor.createProxyConfiguration(proxyConfig);
 
+    // support files as URL sources
+    const requestQueue = await RequestQueue.open();
+    for await (const req of fromStartUrls(input.startUrls)) {
+        await requestQueue.addRequest(req);
+    }
+    
     const crawler = new BasicCrawler({
+        requestQueue,
         async requestHandler({ request }) {
             const { url } = request;
             try {
@@ -75,5 +92,5 @@ Actor.main(async () => {
         },
     });
 
-    await crawler.run(input.startUrls);
+    await crawler.run();
 });
